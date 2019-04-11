@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     margin: 10
   },
   comentario: {
-    flexDirection: "row"
+    flexDirection: "row",
+    paddingHorizontal: 10
   },
   tituloComentario: {
     fontWeight: "bold",

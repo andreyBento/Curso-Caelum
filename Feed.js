@@ -89,21 +89,3 @@ export default class Feed extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  cabecalho:{
-    margin: 10,
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  fotoPerfil:{
-    marginRight: 10,
-    borderRadius: 20,
-    width: 40,
-    height: 40
-  },
-  foto: {
-    width: width,
-    height: width
-  }
-});
