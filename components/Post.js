@@ -58,9 +58,9 @@ export default class Post extends Component {
 }
 
 Likes.propTypes = {
-  likeCallback = PropTypes.func.isRequired,
-  comentarioCallback = PropTypes.func.isRequired,
-  foto = PropTypes.shape({
+  likeCallback: PropTypes.func.isRequired,
+  comentarioCallback: PropTypes.func.isRequired,
+  foto: PropTypes.shape({
     id: PropTypes.number.isRequired,
     likeada: PropTypes.bool.isRequired,
     likers: PropTypes.array.isRequired,

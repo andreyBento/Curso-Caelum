@@ -36,8 +36,8 @@ export default class InputComentario extends Component {
 }
 
 InputComentario.propTypes = {
-    comentarioCallback = PropTypes.func.isRequired,
-    idFoto = PropTypes.number.isRequired
+    comentarioCallback: PropTypes.func.isRequired,
+    idFoto: PropTypes.number.isRequired
 }
 
 const styles = StyleSheet.create({

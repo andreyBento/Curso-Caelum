@@ -11,7 +11,7 @@ import {FlatList, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage";
 import Post from "./components/Post";
 import InstaluraFetchService from "./services/InstaluraFetchService";
-import Notificacao from "../api/Notificacao"
+import Notificacao from "./api/Notificacao.android"
 import HeaderUsuario from './components/HeaderUsuario';
 
 const {width} = Dimensions.get("screen");
