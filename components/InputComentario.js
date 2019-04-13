@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 
+import PropTypes from "prop-types";
+
 export default class InputComentario extends Component {
     constructor(){
         super();
@@ -31,6 +33,11 @@ export default class InputComentario extends Component {
             </View>
         )
     }
+}
+
+InputComentario.propTypes = {
+    comentarioCallback = PropTypes.func.isRequired,
+    idFoto = PropTypes.number.isRequired
 }
 
 const styles = StyleSheet.create({

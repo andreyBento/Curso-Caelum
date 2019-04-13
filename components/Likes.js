@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 
+import PropTypes from "prop-types";
+
 export default class Likes extends Component {
 
     carregarIcone = (likeada) =>{
@@ -35,6 +37,15 @@ export default class Likes extends Component {
     }
 }
 
+Likes.propTypes = {
+  likeCallback = PropTypes.func.isRequired,
+  foto = PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    likeada: PropTypes.bool.isRequired,
+    likers: PropTypes.array.isRequired
+  })
+}
+
 const styles = StyleSheet.create({
     botaoDeLike: {
       height: 40,
@@ -43,4 +54,4 @@ const styles = StyleSheet.create({
     likes: {
       fontWeight: "bold"
     }
-  });
+});

@@ -3,6 +3,8 @@ import {StyleSheet, Text, Dimensions, View, Image, TouchableOpacity, TextInput} 
 import InputComentario from './InputComentario';
 import Likes from './Likes';
 
+import PropTypes from "prop-types";
+
 const {width} = Dimensions.get("screen");
 
 export default class Post extends Component {
@@ -29,13 +31,13 @@ export default class Post extends Component {
   }
 
   render(){
-    const {likeCallback, foto, comentarioCallback} = this.props;
+    const {likeCallback, foto, comentarioCallback, verPerfilCallback} = this.props;
     return(
       <View>
-        <View style={styles.cabecalho}>
+        <TouchableOpacity style={styles.cabecalho} onPress={() => verPerfilCallback(fotoid)}>
           <Image source={{uri: foto.urlPerfil}} style={styles.fotoPerfil} />
           <Text style={{fontSize: 14}}>{foto.loginUsuario}</Text>
-        </View>
+        </TouchableOpacity>
         <Image source={{uri: foto.urlFoto}} style={styles.foto} />
         <View style={styles.rodape}>
           <Likes foto={foto} likeCallback={likeCallback} />
@@ -53,6 +55,17 @@ export default class Post extends Component {
       </View>
     )
   }
+}
+
+Likes.propTypes = {
+  likeCallback = PropTypes.func.isRequired,
+  comentarioCallback = PropTypes.func.isRequired,
+  foto = PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    likeada: PropTypes.bool.isRequired,
+    likers: PropTypes.array.isRequired,
+    comentario: PropTypes.string.isRequired
+  })
 }
 
 const styles = StyleSheet.create({
