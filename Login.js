@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, TextInput, AsyncStorage, View, Text, Button} from 'react-native';
+import {StyleSheet, Dimensions, TextInput, View, Text, Button} from 'react-native';
+
+import AsyncStorage from "@react-native-community/async-storage";
 
 const {width} = Dimensions.get("screen");
 

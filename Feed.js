@@ -7,7 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {FlatList, Dimensions, AsyncStorage, ScrollView} from 'react-native';
+import {FlatList, Dimensions, ScrollView} from 'react-native';
+import AsyncStorage from "@react-native-community/async-storage";
 import Post from "./components/Post";
 import InstaluraFetchService from "./services/InstaluraFetchService";
 import Notificacao from "../api/Notificacao"
