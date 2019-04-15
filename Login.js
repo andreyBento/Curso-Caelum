@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, TextInput, View, Text, Button} from 'react-native';
-
-import AsyncStorage from "@react-native-community/async-storage";
+import {StyleSheet, Dimensions, TextInput, View, Text, Button, AsyncStorage} from 'react-native';
+import { Navigation } from "react-native-navigation";
+//import AsyncStorage from "@react-native-community/async-storage";
 
 const {width} = Dimensions.get("screen");
 
 export default class Feed extends Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        Navigation.events().bindComponent(this);
         this.state = {
             usuario: "",
             senha: "",
@@ -35,17 +36,24 @@ export default class Feed extends Component {
                 if(response.ok){
                     return response.text();
                 }else{
-                    throw new Error("Nao foi possivel efetuar login");
+                    throw new Error("Login ou senha incorretos.");
                 }
             })
             .then(token => {
                 AsyncStorage.setItem("token", token);
                 AsyncStorage.setItem("usuario", this.state.usuario);
 
-                this.props.navigator.resetTo({
-                    screen: "Feed",
-                    title: "Instalura"
-                })
+                Navigation.setRoot({
+                    root: {
+                        component: {
+                            name: "Feed",
+                            options: {},
+                            passProps: {
+                                text: "Instalura"
+                            }
+                        }
+                    }
+                });
             })
             .catch(error => this.setState({mensagem: error.message}));
     }

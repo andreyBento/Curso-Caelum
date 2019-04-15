@@ -7,30 +7,32 @@
  */
 
 import React, {Component} from 'react';
-import {FlatList, Dimensions, ScrollView} from 'react-native';
-import AsyncStorage from "@react-native-community/async-storage";
+import {FlatList, Dimensions, ScrollView, View, AsyncStorage, TouchableOpacity, Text, StyleSheet} from 'react-native';
+//import AsyncStorage from "@react-native-community/async-storage";
 import Post from "./components/Post";
 import InstaluraFetchService from "./services/InstaluraFetchService";
 import Notificacao from "./api/Notificacao.android"
 import HeaderUsuario from './components/HeaderUsuario';
+import { Navigation } from "react-native-navigation";
 
 const {width} = Dimensions.get("screen");
 
 export default class Feed extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    Navigation.events().bindComponent(this);
     this.state = {
       fotos: []
     }
   }
 
   componentDidMount(){
-
-    this.props.navigator.setOnNavigatorEvent(evento => {
+    this.carregaFotos();
+    /*this.props.navigator.setOnNavigatorEvent(evento => {
       if(evento.id === "willAppear"){
         this.carregaFotos();
       }
-    })
+    })*/
 
   }
 
@@ -83,12 +85,8 @@ export default class Feed extends Component {
     
         this.atualizarFotos(fotoAtualizada);
       });
-
-    InstaluraFetchService.post("/fotos/${idFoto}/like")
-      .catch(e => {
-        this.setState({fotos: listaOriginal})
-        Notificacao.exibe("Ops...", "Algo deu errado ao curtir");
-      })
+      
+      InstaluraFetchService.post("fotos/${idFoto}/like");
   }
 
   adicionaComentario = (idFoto, valorComentario, inputComentario) => {
@@ -101,7 +99,7 @@ export default class Feed extends Component {
       };
       const listaOriginal = this.state.fotos;
 
-      InstaluraFetchService.post("/fotos/${idFoto}/comment", comentario)
+      InstaluraFetchService.post("public/fotos/${idFoto}/comment", comentario)
         .then(comentario => [...foto.comentarios, comentario])
         .then(novaLista => {
           const fotoAtualizada = {
@@ -120,7 +118,7 @@ export default class Feed extends Component {
 
   verPerfilUsuario = (idFoto) => {
     const foto = this.buscaPorId(idFoto);
-    this.props.navigator.push({
+    /*this.props.navigator.push({
       screen: "PerfilUsuario",
       title: foto.loginUsuario,
       backButtonTitle: "",
@@ -128,7 +126,19 @@ export default class Feed extends Component {
         usuario: foto.loginUsuario,
         fotoDePerfil: foto.urlPerfil
       }
-    })
+    })*/
+
+    Navigation.setRoot({
+      root: {
+          component: {
+            name: "PerfilUsuario",
+            options: {},
+            passProps: {
+              text: foto.loginUsuario
+            }
+          }
+      }
+  });
   }
 
   exibeHeader() {
@@ -137,24 +147,65 @@ export default class Feed extends Component {
     }
   }
 
+  logout = () => {
+    AsyncStorage.removeItem("token");
+    AsyncStorage.removeItem("usuario");
+    Navigation.setRoot({
+      root: {
+        component: {
+          name: "Login",
+          options: {},
+          passProps: {
+            text: "Instalura"
+          }
+        }
+      }
+  });
+  }
+
   render() {
 
     return (
-      <ScrollView>
-        {this.exibeHeader()}
-        <FlatList
-          keyExtractor={item => item.id + item.loginUsuario}
-          data={this.state.fotos}
-          renderItem={ ({item}) => 
-            <Post 
-              foto={item} 
-              likeCallback={this.like} 
-              comentarioCallback={this.adicionaComentario} 
-              verPerfilCallback={this.verPerfilUsuario}
-            />
-          }
-        />
-      </ScrollView>
+      <View style={{flex: 1}}>
+        <TouchableOpacity
+          style={styles.botaoLogout}
+          onPress={this.logout}
+        >
+          <Text style={styles.botaoLogoutText}>Logout</Text>
+        </TouchableOpacity>
+        <ScrollView>
+          {this.exibeHeader()}
+          <FlatList
+            keyExtractor={item => item.id + item.loginUsuario}
+            data={this.state.fotos}
+            renderItem={ ({item}) => 
+              <Post 
+                foto={item} 
+                likeCallback={this.like} 
+                comentarioCallback={this.adicionaComentario} 
+                verPerfilCallback={this.verPerfilUsuario}
+              />
+            }
+          />
+        </ScrollView>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  botaoLogout: {
+    height: 30,
+    width: width - 20,
+    backgroundColor: "red",
+    borderRadius: 10,
+    marginVertical: 20,
+    alignSelf: "center",
+    justifyContent: "center",
+  },
+  botaoLogoutText:{
+    alignSelf: "center",
+    justifyContent: "center",
+    color: "black",
+  }
+});

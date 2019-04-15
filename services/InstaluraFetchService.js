@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import {AsyncStorage} from 'react-native';
 
 export default class InstaluraFetchService{
 
@@ -23,10 +23,10 @@ export default class InstaluraFetchService{
             });
     }
 
-    static post (recurso, dado){
+    static post(recurso, dados){
         const uri = "https://instalura-api.herokuapp.com/api/" + recurso;
 
-        AsyncStorage.getItem("token")
+        return AsyncStorage.getItem("token")
             .then(token => {
                 return {
                     method: "POST",

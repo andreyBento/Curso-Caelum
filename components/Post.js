@@ -34,7 +34,7 @@ export default class Post extends Component {
     const {likeCallback, foto, comentarioCallback, verPerfilCallback} = this.props;
     return(
       <View>
-        <TouchableOpacity style={styles.cabecalho} onPress={() => verPerfilCallback(fotoid)}>
+        <TouchableOpacity style={styles.cabecalho} onPress={() => verPerfilCallback(foto.id)}>
           <Image source={{uri: foto.urlPerfil}} style={styles.fotoPerfil} />
           <Text style={{fontSize: 14}}>{foto.loginUsuario}</Text>
         </TouchableOpacity>
@@ -45,7 +45,7 @@ export default class Post extends Component {
         {this.exibeLegenda(foto)}
 
         {foto.comentarios.map(comentario => 
-          <View style={styles.comentario} key={comentario.id}>
+          <View style={styles.comentario} key={comentario.id + comentario.login}>
             <Text style={styles.tituloComentario}>{comentario.login}</Text>
             <Text>{comentario.texto}</Text>
           </View>
@@ -57,7 +57,7 @@ export default class Post extends Component {
   }
 }
 
-Likes.propTypes = {
+Post.propTypes = {
   likeCallback: PropTypes.func.isRequired,
   comentarioCallback: PropTypes.func.isRequired,
   foto: PropTypes.shape({
