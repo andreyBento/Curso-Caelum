@@ -9,6 +9,7 @@ import Login from './Login';
 
 Navigation.registerComponent(`Login`, () => Login);
 Navigation.registerComponent(`Feed`, () => Feed);
+Navigation.registerComponent(`PerfilUsuario`, () => Feed);
 
 Navigation.events().registerAppLaunchedListener(() => {
     AsyncStorage.getItem("token")

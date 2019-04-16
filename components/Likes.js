@@ -10,7 +10,7 @@ export default class Likes extends Component {
     }
 
     exibeLikes(likers){
-        if(likers.length <= 0){
+        if(!likers || likers.length <= 0){
           return;
         } else {
           return (

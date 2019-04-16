@@ -38,6 +38,12 @@ export default class InstaluraFetchService{
                 };
             })
             .then(requestInfo => fetch(uri, requestInfo))
-            .then(resposta => resposta.json())
+            .then(resposta => {
+                if(resposta.ok){
+                    return resposta.json();
+                } else {
+                    throw new Error("Nao foi possível completar a operacao");
+                }
+            });
     }
 }

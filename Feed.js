@@ -26,21 +26,15 @@ export default class Feed extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidAppear(){
     this.carregaFotos();
-    /*this.props.navigator.setOnNavigatorEvent(evento => {
-      if(evento.id === "willAppear"){
-        this.carregaFotos();
-      }
-    })*/
-
   }
 
   carregaFotos(){
     let uri = "/fotos";
 
     if(this.props.usuario){
-      uri = "/public/fotos/${this.props.usuario}";
+      uri = `/public/fotos/${this.props.usuario}`;
     }
 
     InstaluraFetchService.get(uri)
@@ -71,10 +65,12 @@ export default class Feed extends Component {
             {login: usuarioLogado}
           ];
         } else {
-          novaLista = foto.likers.filter(liker => {
+          novaLista = foto.likers && foto.likers.filter(liker => {
             return liker.login !== usuarioLogado;
           })
         }
+
+        return novaLista;
       })
       .then(novaLista => {
         const fotoAtualizada = {
@@ -86,10 +82,16 @@ export default class Feed extends Component {
         this.atualizarFotos(fotoAtualizada);
       });
       
-      InstaluraFetchService.post("fotos/${idFoto}/like");
+      InstaluraFetchService.post(`fotos/${idFoto}/like`)
+        .catch(e => {
+          this.setState({fotos: listaOriginal});
+          Notificacao.exibe("Ops..", "Algo deu errado ao curtir");
+        });
   }
 
   adicionaComentario = (idFoto, valorComentario, inputComentario) => {
+    const listaOriginal = this.state.fotos;
+
     if(valorComentario === ""){
       return;
     } else {
@@ -97,9 +99,7 @@ export default class Feed extends Component {
       const comentario = {
         texto: valorComentario
       };
-      const listaOriginal = this.state.fotos;
-
-      InstaluraFetchService.post("public/fotos/${idFoto}/comment", comentario)
+      InstaluraFetchService.post(`fotos/${idFoto}/comment`, comentario)
         .then(comentario => [...foto.comentarios, comentario])
         .then(novaLista => {
           const fotoAtualizada = {
@@ -112,31 +112,26 @@ export default class Feed extends Component {
         .catch(e => {
           this.setState({fotos: listaOriginal});
           Notificacao.exibe("Ops..", "Algo deu errado ao adicionar comentários");
-        })
+        });
     }
   }
 
   verPerfilUsuario = (idFoto) => {
     const foto = this.buscaPorId(idFoto);
-    /*this.props.navigator.push({
-      screen: "PerfilUsuario",
-      title: foto.loginUsuario,
-      backButtonTitle: "",
-      passProps: {
-        usuario: foto.loginUsuario,
-        fotoDePerfil: foto.urlPerfil
-      }
-    })*/
 
-    Navigation.setRoot({
+    Navigation.push({
       root: {
-          component: {
-            name: "PerfilUsuario",
-            options: {},
-            passProps: {
-              text: foto.loginUsuario
-            }
+        component: {
+          name: "PerfilUsuario",
+          options: {
+            title: foto.loginUsuario,
+            backButtonTitle: "",
+          },
+          passProps: {
+            usuario: foto.loginUsuario,
+            fotoDePerfil: foto.urlPerfil
           }
+        }
       }
   });
   }

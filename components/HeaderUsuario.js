@@ -13,7 +13,7 @@ export default class HeaderUsuario extends Component {
             <View style={styles.container}>
                 <View style={styles.painelFoto}>
                     <Image style={styles.fotoDoPerfil} source={{uri: this.props.fotoDePerfil}} />
-                    <View style={styles.usarioInfo}>
+                    <View style={styles.usuarioInfo}>
                         <Text style={styles.posts}>{this.props.posts}</Text>
                         <Text style={styles.texto}>publicacoes</Text>
                     </View>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: "grey"
     },
-    usarioInfo: {
+    usuarioInfo: {
         flex: 1,
         flexDirection: "row",
         alignItems: "center",
