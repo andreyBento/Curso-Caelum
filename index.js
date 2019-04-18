@@ -16,26 +16,32 @@ Navigation.events().registerAppLaunchedListener(() => {
         .then(token => {
             if (token) {
                 return {
-                    name: "Feed",
-                    options: {},
-                    passProps: {
-                        text: "Instalura"
-                    }
+                    /*stack: {
+                        children: [{*/
+                            component: {
+                                id: 'Feed',
+                                name: "Feed",
+                                options: {},
+                                passProps: {
+                                    text: "Instalura"
+                                }
+                            }
+                        /*}]
+                    }*/
                 }
             }
             return {
-                name: "Login",
-                options: {},
-                passProps: {
-                    text: "Login"
+                component: {
+                    id: "Login",
+                    name: "Login",
+                    options: {},
+                    passProps: {
+                        text: "Login"
+                    }
                 }
             };
         })
         .then(screen => Navigation.setRoot({
-            root: {
-                component: screen
-            }
+            root: screen
         }));
 });
-
-//AppRegistry.registerComponent(appName, () => Login);

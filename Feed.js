@@ -119,21 +119,56 @@ export default class Feed extends Component {
   verPerfilUsuario = (idFoto) => {
     const foto = this.buscaPorId(idFoto);
 
-    Navigation.push({
-      root: {
-        component: {
-          name: "PerfilUsuario",
-          options: {
-            title: foto.loginUsuario,
-            backButtonTitle: "",
-          },
-          passProps: {
-            usuario: foto.loginUsuario,
-            fotoDePerfil: foto.urlPerfil
+    Navigation.showModal({
+      stack: {
+        children: [{
+          component: {
+            id: "PerfilUsuario",
+            name: "PerfilUsuario",
+            passProps: {
+              usuario: foto.loginUsuario,
+              fotoDePerfil: foto.urlPerfil
+            },
+            options: {
+              topBar: {
+                title: {
+                  text: foto.loginUsuario
+                },
+                rightButtons: [
+                  {
+                    id: 'buttonOne',
+                    text: 'Voltar'
+                  }
+                ]
+              }
+            },
           }
-        }
+        }]
       }
-  });
+    });
+
+    /*Navigation.push(this.props.componentId, {
+      component: {
+        id: "PerfilUsuario",
+        name: "PerfilUsuario",
+        backButtonTitle: "",
+        passProps: {
+          usuario: foto.loginUsuario,
+          fotoDePerfil: foto.urlPerfil
+        },
+        options: {
+          topBar: {
+            title: {
+              text: foto.loginUsuario
+            },
+          }
+        },
+      }
+    });*/
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    Navigation.dismissAllModals();
   }
 
   exibeHeader() {

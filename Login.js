@@ -45,13 +45,19 @@ export default class Feed extends Component {
 
                 Navigation.setRoot({
                     root: {
-                        component: {
-                            name: "Feed",
-                            options: {},
-                            passProps: {
-                                text: "Instalura"
-                            }
-                        }
+                        /*stack: {
+                            children: [{*/
+                                component: {
+                                    id: 'Feed',
+                                    name: "Feed",
+                                    options: {},
+                                    passProps: {
+                                        text: "Instalura"
+                                    },
+                                    topBar: null
+                                }
+                            /*}]
+                        }*/
                     }
                 });
             })
